@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-content">
+            <h1>{{ category.name }}</h1>
+            <p>{{ category.description }}</p>
+        </div>
+    {% if user.is_staff %}
+        <a href="/admin/cards/category/{{ category.id }}/change" class="cta-button bg-admin-item">Edit</a>
+    {% endif %}
+    </section>
+
+  <div class="margin-container">
+
+  {% if sets %}
+      <div class="flashcard-sets">
+              {% for set in sets %}
+                 <div class="flashcard-set">
+                    <h3>{{ set.title }}</h3>
+                    <p>{{ set.description|truncatewords:20 }}</p>
+                    <a href="{% url 'flashcard_set_detail' set.id %}" class="view-set-btn">View Set</a>
+                </div>
+            {% endfor %}
+      </div>
+  {% else %}
+      <div class="center" style="margin-top: 30px">
+            <h2>There currently aren't any sets in this category.</h2>
+        </div>
+  {% endif %}
+  </div>
+{% endblock %}

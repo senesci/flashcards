@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Add Card to "{{ set.title }}"</h1>
+    </div>
+</section>
+
+<div class="margin-container">
+   <div class="form-container">
+       <div class="login-box">
+           <h2 class="center">New Card</h2>
+           <form method="POST">
+               {% csrf_token %}
+               {{ form.as_p }}
+               <button type="submit" class="btn-primary">Add</button>
+           </form>
+       </div>
+   </div>
+</div>
+{% endblock %}

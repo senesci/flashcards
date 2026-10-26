@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Settings</h1>
+        <p>Update your preferences and account info.</p>
+    </div>
+</section>
+
+<div class="form-container">
+    <div class="login-box">
+        <form method="POST">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <button type="submit" class="btn-primary" name="update_profile">Update Profile</button>
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+            <button type="submit" class="btn-primary" name="change_password">Change Password</button>
+        </form>
+        {% if not user.is_staff %}
+            <h3 class="center">Danger Zone</h3>
+            <form method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+                {% csrf_token %}
+                <button type="submit" class="btn-primary bg-alert" name="delete_account">Delete Account</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

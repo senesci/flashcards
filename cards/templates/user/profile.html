@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-content">
+        {% if account.first_name or account.last_name %}
+            <h1>{{ account.first_name }} {{ account.last_name }}</h1>
+        {% else %}
+            <h1>{{ account.username }}</h1>
+        {% endif %}
+            <div class="profile-info">
+                {% if account.is_staff %}
+                    <p class="site-staff-member">Staff member</p>
+                {% endif %}
+                <p class="profile-info-item">Member since {{ account.date_joined|date:"Y-m-d" }}</p>
+                {% if user.is_staff %}
+                    <a href="/admin/auth/user/{{ account.id }}/change" class="cta-button bg-admin-item">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <div class="margin-container">
+        {% if user.id == account.id %}
+            <h2 class="center" style="margin: 30px;">Your Flashcard Sets</h2>
+        {% else %}
+            {% if account.first_name %}
+                <h2 class="center" style="margin: 30px;">{{ account.first_name }}'s Flashcard Sets</h2>
+            {% else %}
+                <h2 class="center" style="margin: 30px;">{{ account.username }}'s Flashcard Sets</h2>
+            {% endif %}
+        {% endif %}
+
+        <div class="flashcard-sets">
+            {% for set in sets %}
+                <div class="flashcard-set">
+                    <h3 style="margin: 0;">{{ set.title }}</h3>
+                    {% if not set.published %}
+                        <p style="margin-bottom: 20px;">Not published</p>
+                    {% endif %}
+                    <p>{{ set.description|truncatewords:20 }}</p>
+                    <a href="{% url 'flashcard_set_detail' set.id %}" class="view-set-btn">View Set</a>
+                </div>
+            {% empty %}
+                <p class="center">{{ account.username }} hasn't created any flashcard sets yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

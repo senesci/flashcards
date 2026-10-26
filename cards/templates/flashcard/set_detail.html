@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-content">
+            <h1>{{ set.title }}</h1>
+            {% if not set.published %}
+                <p><i>Not published</i></p>
+            {% endif %}
+            {% if set.user.first_name or set.user.last_name %}
+                <p>Created by <a href="{% url 'user_profile' set.user.username %}"><strong>{{ set.user.first_name }} {{ set.user.last_name }}</strong></a></p>
+            {% else %}
+                <p>Created by <a href="{% url 'user_profile' set.user.username %}"><strong>{{ set.user }}</strong></a></p>
+            {% endif %}
+            <p>{{ set.description }}</p>
+            <a href="{% url 'quiz' set.id %}" class="cta-button">Quiz Yourself</a>
+            {% if set.user.id == user.id %}
+                <a href="{% url 'edit_set' set.id %}" class="cta-button ">Edit</a>
+            {% endif %}
+            {% if user.is_staff %}
+                <a href="/admin/cards/flashcardset/{{ set.id }}/change" class="cta-button bg-admin-item">Edit</a>
+            {% endif %}
+        </div>
+    </section>
+
+  <div class="margin-container">
+      {% if cards %}
+          <h2 class="center" style="margin: 30px;">Flashcards
+          {% if user.is_staff %}
+              <a href="/admin/cards/flashcard/?set__id__exact={{ set.id }}" class="cta-button bg-admin-item">Edit</a>
+          {% endif %}
+          </h2>
+          <div class="">
+                  {% for card in cards %}
+                     <div class="flashcard-set" style="margin: 20px;">
+                        <h3>{{ forloop.counter }}. {{ card.term }}</h3>
+                    </div>
+                {% endfor %}
+          </div>
+      {% else %}
+          <div class="center" style="margin: 30px;">
+              <h2>There currently aren't any cards in this set.</h2>
+              {% if user.is_staff %}
+                  <br/>
+                  <a href="/admin/cards/flashcard/?set__id__exact={{ set.id }}" class="cta-button bg-admin-item">Edit</a>
+              {% endif %}
+            </div>
+      {% endif %}
+
+
+    {% if related %}
+        <h2 class="center" style="margin: 30px;">Related Sets</h2>
+      <div class="flashcard-sets">
+              {% for set in related %}
+                 <div class="flashcard-set">
+                    <h3>{{ set.title }}</h3>
+                    <p>{{ set.description|truncatewords:20 }}</p>
+                    <a href="{% url 'flashcard_set_detail' set.id %}" class="view-set-btn">View Set</a>
+                </div>
+            {% endfor %}
+      </div>
+    {% else %}
+        <div class="center" style="margin: 30px;">
+            <h2>There currently aren't related flashcard sets.</h2>
+        </div>
+    {% endif %}
+          </div>
+
+{% endblock %}

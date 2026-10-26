@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <section class="form-container">
+    <div class="login-box">
+      <h2>Sign Up</h2>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+          <p style="margin: 20px; font-weight: 700;">By signing up, you agree to our <a>terms of service</a> and <a>privacy policy</a>.</p>
+        <div class="login-actions">
+          <button type="submit" class="btn-primary">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}

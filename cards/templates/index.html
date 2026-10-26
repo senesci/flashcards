@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <i>Flashcards</i>!</h1>
+            <p>Your flashcard companion to learn smarter and faster.</p>
+            <a href="{% url 'set_create' %}" class="cta-button">Create a Flashcard Set</a>
+        </div>
+    </section>
+
+    <section class="featured-sets">
+        <h2>Featured Flashcard Sets</h2>
+        <div class="flashcard-sets">
+            {% for set in flashcard_sets %}
+                <div class="flashcard-set">
+                    <h3>{{ set.title }}</h3>
+                    <p>{{ set.description|truncatewords:20 }}</p>
+                    <a href="{% url 'flashcard_set_detail' set.id %}" class="view-set-btn">View Set</a>
+                </div>
+            {% empty %}
+                <p>No featured sets at the moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2>Browse by Categories</h2>
+        <div class="category-list">
+            {% for category in categories %}
+                <div class="category">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                    <a href="{% url 'category_detail' category.id %}" class="view-category-btn">View Category</a>
+                </div>
+            {% empty %}
+                <p>No categories available.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

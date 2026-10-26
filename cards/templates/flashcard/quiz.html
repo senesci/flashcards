@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Quiz: {{ set.title }}</h1>
+        <p id="quiz-progress"></p>
+    </div>
+</section>
+
+<div class="margin-container">
+   <div class="form-container">
+       <div class="login-box">
+           <h2 class="center" id="quiz-term"></h2>
+           <form id="quiz-form">
+               <input type="text" id="quiz-answer" placeholder="Type the definition and press Enter" autocomplete="off" autofocus>
+           </form>
+           <p id="quiz-feedback"></p>
+           <a href="{% url 'flashcard_set_detail' set.id %}" id="quiz-back" class="cta-button" style="display: none;">Back to Set</a>
+       </div>
+   </div>
+</div>
+
+{{ cards|json_script:"quiz-cards" }}
+<script src="{% static 'js/quiz.js' %}"></script>
+{% endblock %}

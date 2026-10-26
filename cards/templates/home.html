@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-content">
+            <div style="margin-bottom: 20px;">
+                {% if user.first_name or user.last_name %}
+                    <h1>Welcome back, {{ user.first_name }}!</h1>
+                {% else %}
+                    <h1>Welcome back, {{ user.username }}!</h1>
+                {% endif %}
+            </div>
+            <a href="{% url 'set_create' %}" class="cta-button">Create a Flashcard Set</a>
+        </div>
+    </section>
+    <div class="margin-container">
+        <section class="featured-sets">
+            <h2>Featured Flashcard Sets</h2>
+            <div class="flashcard-sets">
+                {% for set in flashcard_sets %}
+                    <div class="flashcard-set">
+                        <h3>{{ set.title }}</h3>
+                        <p>{{ set.description|truncatewords:20 }}</p>
+                        <a href="{% url 'flashcard_set_detail' set.id %}" class="view-set-btn">View Set</a>
+                    </div>
+                {% empty %}
+                    <p>No featured sets at the moment.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="categories">
+            <h2>Browse by Categories</h2>
+            <div class="category-list">
+                {% for category in categories %}
+                    <div class="category">
+                        <h3>{{ category.name }}</h3>
+                        <p>{{ category.description }}</p>
+                        <a href="{% url 'category_detail' category.id %}" class="view-category-btn">View Category</a>
+                    </div>
+                {% empty %}
+                    <p>No categories available.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Editing "{{ set.title }}"</h1>
+        {% if not set.published %}
+            <p><strong>Not published</strong></p>
+        {% endif %}
+        <p>{{ set.description }}</p>
+        <a href="{% url 'set_settings' set.id %}" class="cta-button" style="margin: 0 auto 10px;">Settings</a>
+    </div>
+</section>
+
+<div class="margin-container">
+   {% if cards %}
+        <h2 class="center" style="margin: 30px;">Flashcards</h2>
+
+       <div class="center" style="margin: 30px;">
+            <a href="{% url "set_add_card" set.id %}" class="btn-primary">Add Flashcard</a>
+       </div>
+
+        <div class="flashcard-sets">
+            {% for card in flashcards %}
+                <div class="flashcard-set card-box">
+                    <h3>{{ forloop.counter }}. {{ card.term }}</h3>
+                    <p>{{ card.definition|linebreaksbr }}</p>
+                    <a href="{% url 'edit_flashcard' set.id card.id %}" class="cta-button">Edit</a>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="center" style="margin: 30px;">
+            <h2 style="margin-bottom: 30px">There currently aren't any cards in this set.</h2>
+            <a href="{% url "set_add_card" set.id %}" class="btn-primary">Add Flashcard</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
